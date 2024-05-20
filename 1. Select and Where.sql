@@ -1,7 +1,6 @@
 USE sample_db;
 SELECT *
 FROM superstore;
--- Note: please do not use any functions which are not taught in the class. you need to solve the questions only with the concepts that have been discussed so far.
 
 -- 1- write a sql to get all the orders where customers name has "a" as second character and "d" as fourth character (58 rows)
 SELECT COUNT(*)
