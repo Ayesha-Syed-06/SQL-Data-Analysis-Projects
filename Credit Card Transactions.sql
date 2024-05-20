@@ -1,11 +1,3 @@
--- SQL porfolio project.
--- download credit card transactions dataset from below link :
--- https://www.kaggle.com/datasets/thedevastator/analyzing-credit-card-spending-habits-in-india
--- import the dataset in sql server with table name : credit_card_transcations
--- change the column names to lower case before importing data to sql server.Also replace space within column names with underscore.
--- (alternatively you can use the dataset present in zip file)
--- while importing make sure to change the data types of columns. by defualt it shows everything as varchar.
-
 SELECT *
 FROM credit_card;
 -- write 4-6 queries to explore the dataset and put your findings 
@@ -25,8 +17,8 @@ WITH cte AS(
 	SELECT *,100.0*(sumspend/totalspend) AS percent_contribution
     FROM cte AS c
     INNER JOIN total AS t
-    ON 1=1                                        -- WHAT IS 1=1 if it is simplified form cant we use it instead of on condition
-    ORDER BY sumspend DESC                       -- if we can combine tables without joins then why joins?
+    ON 1=1                                     
+    ORDER BY sumspend DESC                       
     LIMIT 5;
 
 
@@ -38,7 +30,7 @@ WITH cte AS(
         -- ORDER BY card_type,total_spend DESC
         )
 		SELECT *
-        FROM(SELECT *,DENSE_RANK() OVER(PARTITION BY card_type ORDER BY total_spend) AS rn        -- CONFUSED
+        FROM(SELECT *,DENSE_RANK() OVER(PARTITION BY card_type ORDER BY total_spend) AS rn        
 				FROM cte) AS a
 		WHERE rn=1;
 
@@ -50,7 +42,7 @@ WITH cte AS(
         SELECT *,
 		SUM(amount) OVER(PARTITION BY card_type ORDER BY transaction_date,transaction_id) AS total_spend
 		FROM credit_card
-        -- ORDER BY card_type,total_spend DESC      -- WHY THIS IS FOR?
+        -- ORDER BY card_type,total_spend DESC      
         )
 
 SELECT *
@@ -74,7 +66,7 @@ ORDER BY gold_ratio;
 
 SELECT *
 FROM credit_card;
-                                               -- when we have each key word how to understand to use group b or partition by?
+                                               
 -- 5- write a query to print 3 columns:  city, highest_expense_type , lowest_expense_type (example format : Delhi , bills, Fuel)
 	WITH cte AS(	
         SELECT city,exp_type,SUM(amount) AS amount_spent
@@ -89,8 +81,8 @@ FROM credit_card;
     )
 	SELECT city,
 	MAX(CASE WHEN rn_desc=1 THEN exp_type END) AS highest_expense_type,
-    MIN(CASE WHEN rn_asc=1 THEN exp_type END) AS lowest_expense_type                    -- we are able to do half part of code but after that not able to do 
-    FROM cte2                                                                            -- and if we see answers then able to think but without seeing getting difficult
+    MIN(CASE WHEN rn_asc=1 THEN exp_type END) AS lowest_expense_type                   
+    FROM cte2                                                                           
     GROUP BY city;
 -- 6- write a query to find percentage contribution of spends by females for each expense type
 
@@ -144,7 +136,7 @@ WITH cte AS(
         )
         SELECT city,TIMESTAMPDIFF(DAY,MIN(transaction_date),MAX(transaction_date)) AS date_diff
         FROM cte
-        WHERE rn=1 OR rn=500                                            -- why we are using OR here
+        WHERE rn=1 OR rn=500                                            
         GROUP BY city
         HAVING COUNT(*)=2
         ORDER BY date_diff
